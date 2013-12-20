@@ -188,7 +188,7 @@
 		
 		CGFloat offset = MAX(scrollView.contentOffset.y * -1, 0);
 		offset = MIN(offset, 60);
-		scrollView.contentInset = UIEdgeInsetsMake(offset, 0.0f, 0.0f, 0.0f);
+		[self changeScrollView:scrollView withTopInset:offset];
 		
 	} else if (scrollView.isDragging) {
 		
@@ -204,7 +204,7 @@
 		}
 		
 		if (scrollView.contentInset.top != 0) {
-			scrollView.contentInset = UIEdgeInsetsZero;
+			[self changeScrollView:scrollView withTopInset:0.0f];
 		}
 		
 	}
@@ -227,7 +227,8 @@
 		[self setState:EGOOPullRefreshLoading];
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:0.2];
-		scrollView.contentInset = UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f);
+		[self changeScrollView:scrollView withTopInset:60.0f];
+
 		[UIView commitAnimations];
 		
 	}
@@ -238,7 +239,7 @@
 	
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:.3];
-	[scrollView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
+	[self changeScrollView:scrollView withTopInset:0.0f];
 	[UIView commitAnimations];
 	
 	[self setState:EGOOPullRefreshNormal];
@@ -259,5 +260,14 @@
     [super dealloc];
 }
 
+#pragma mark -
+#pragma mark Private Methods
+
+- (void)changeScrollView:(UIScrollView *)scrollView withTopInset:(CGFloat)top {
+	
+	UIEdgeInsets insets = scrollView.contentInset;
+	insets.top = top;
+	scrollView.contentInset = insets;
+}
 
 @end
